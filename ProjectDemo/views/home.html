@@ -1,0 +1,309 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+
+    <style>
+        .col-sm-2,
+        .col-sm-9 {
+            height: 550px;
+        }
+        /*table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            min-width: 750px;
+            max-width: 40px;
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+        }*/
+        /*li {
+            background-color: chartreuse;
+        }*/
+
+        #menu {
+            margin-top: 10px;
+        }
+
+        .list-group-item {
+            margin-top: 10px;
+        }
+
+
+        .messages {
+            padding: 10px;
+            height: 200px;
+            background-color: green;
+            background-color: rgb(237, 239, 244);
+            border-width: 1px;
+            border-color: black;
+            border-style: solid;
+            overflow-y: scroll;
+        }
+
+        .messages ul {
+            padding: 0px;
+            list-style-type: none;
+        }
+
+        .messages ul li {
+            height: auto;
+            margin-bottom: 10px;
+            clear: both;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .messages ul li span {
+            display: inline-block;
+            max-width: 200px;
+            background-color: white;
+            padding: 5px;
+            border-radius: 4px;
+            position: relative;
+            border-width: 1px;
+            border-style: solid;
+            border-color: grey;
+        }
+
+        .messages ul li span.left {
+            float: left;
+        }
+
+        .messages ul li span.left:after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            left: -8.5px;
+            top: 7px;
+            height: 0px;
+            width: 0px;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid white;
+        }
+
+        .messages ul li span.left:before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            left: -9px;
+            top: 7px;
+            height: 0px;
+            width: 0px;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid black;
+        }
+
+        .messages ul li span.right:after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            right: -8px;
+            top: 6px;
+            height: 0px;
+            width: 0px;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid #dbedfe;
+        }
+
+        .messages ul li span.right:before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            right: -9px;
+            top: 6px;
+            height: 0px;
+            width: 0px;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid black;
+        }
+
+        .messages ul li span.right {
+            float: right;
+            background-color: #dbedfe;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .input-box {
+            background-color: white;
+            height: 50px;
+            padding: 0px;
+        }
+
+        .input-box textarea {
+            padding: 0px;
+            width: 278px;
+            height: 100%;
+            display: inline-block;
+            outline: 0px;
+            border-width: 0px;
+            resize: none;
+            border-width: 1px;
+            border-color: black;
+            border-style: solid;
+            font-size: 12px;
+            padding: 10px;
+            border-top-width: 0px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container" id="menu">
+        <div id="header">
+            <nav class="navbar navbar-default">
+                <div class="navbar-header">
+                    <a href="" class="navbar-brand">Home Page</a>
+                </div>
+
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="" id='username'>
+                                <%= myVar %>
+                            </a>
+                        </li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2" id="divUser" style="background-color: blueviolet ;"></div>
+            <div class="col-sm-9 col-sm-offset-1" style="background-color: chartreuse">
+
+                <div style="margin-top : 10px; ">
+                    <div style="width : 100%; height: 80%; background-color: antiquewhite; overflow-y: auto;" class="messages">
+
+                        <ul id="divChat">
+                            <!--<li>
+                               
+                                <span class="left">Hello</span>
+                                <div class="clear"></div>
+                            </li>
+                            <li>
+                                <span class="right">Are you there?</span>
+                                <div class="clear"></div>
+                            </li>-->
+
+                        </ul>
+                    </div>
+                    <!--<textarea class="form-control" rows="20" id="all_message" disabled ></textarea>-->
+                </div>
+
+                <div style="margin-top : 15px;">
+                    <textarea class="form-control" rows="2" id="my_message" style="width: 80% ; float :left"></textarea>
+                    <button class="btn" id="btnSendMessage" style="float : left ; margin :10px; width : 80px; height: 40px;">Send</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            var username = $('#username').text();
+            var $divUser = $('#divUser');
+            var $allMessage = $('#all_message');
+            var $myMessage = $('#my_message');
+            var $divChat = $('#divChat');
+            var $btnSendMessage = $('#btnSendMessage');
+            if (username.length > 0 && username !== null) {
+                var socket = io.connect('/home');
+                console.log('socket ', socket);
+                socket.emit('new user', { username: username });
+
+                socket.on('update users', function (data) {
+                    users = data.users;
+                    // contentChat = data.contentChat;
+                    console.log('length : ' + users.length);
+                    // display user list
+                    var html = '';
+                    for (var i = 0; i < users.length; i++) {
+                        html += '<li class = "list-group-item">' + users[i] + '</li>';
+                    }
+                    $divUser.html(html);
+                    // display content chat
+
+                    // for (var i = 0; i < contentChat.length; i++) {
+                    //     var arr = contentChat[i];
+                    //     var usernameSend = arr[0];
+                    //     var content = arr[1];
+                    //     if (usernameSend == username) {
+                    //         $divChat.append('<li><span class="right">' + content + '</span>  <div class="clear"></div></li> ');
+                    //     } else {
+                    //         $divChat.append('<li> <span class="left"> <b>' + username + ' : </b>' + content + '</span>  <div class="clear"></div></li> ');
+
+                    //     }
+                    // }
+                })
+
+                socket.on('' + username + '', function (data) {
+                    contentChat = data.contentChat;
+                    console.log('content Chat : ' + contentChat);
+                     for (var i = 0; i < contentChat.length; i++) {
+                        var arr = contentChat[i];
+                        var usernameSend = arr[0];
+                        var content = arr[1];
+                        console.log(usernameSend + '  ' + content);
+                        if (usernameSend == username) {
+                            $divChat.append('<li><span class="right">' + content + '</span>  <div class="clear"></div></li> ');
+                        } else {
+                            $divChat.append('<li> <span class="left"> <b>' + usernameSend + ' : </b>' + content + '</span>  <div class="clear"></div></li> ');
+
+                        }
+                    }
+                });
+
+                $btnSendMessage.click(function () {
+                    var message = $myMessage.val().trim();
+                    console.log('message : ', message);
+                    socket.emit('new message', { username: username, content: message });
+                    $myMessage.val('');
+                });
+
+                // display message 
+                socket.on('display message', function (data) {
+                    var usernameSend = data.username;
+                    var content = data.content;
+                    // $allMessage.append(username.trim() + ' : ' + content.trim() + '\n');
+                    // $divChat.append('<div class ="well" style = "width: 70%; margin : auto; height : 20px;" > <strong >' + username + ' : </strong>' + content + '</div>');
+                    if (usernameSend == username) {
+                        // $divChat.append('<sub class="right">' + username + '</sub>');
+                        $divChat.append('<li><span class="right">' + content + '</span>  <div class="clear"></div></li> ');
+                    } else {
+                        $divChat.append('<li> <span class="left"> <b>' + usernameSend + ' : </b>' + content + '</span>  <div class="clear"></div></li> ');
+                    }
+
+
+                })
+
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>

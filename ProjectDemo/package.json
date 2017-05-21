@@ -1,0 +1,20 @@
+{
+  "name": "ninh.js",
+  "description": "vulnerable node application",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "ejs": "1.x",
+    "express": "3.x",
+    "jake": "latest",
+    "lodash": "latest",
+    "mysql": "~2.3.2",
+    "node-gyp": "latest",
+    "passport": "latest",
+    "passport-local": "latest",
+    "password": "latest",
+    "sequelize": "~1.7.8",
+    "socket.io": "*"
+  }
+}
